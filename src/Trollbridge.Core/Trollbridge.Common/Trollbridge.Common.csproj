@@ -84,6 +84,7 @@
     <Compile Include="RetryLimitExceededException.cs" />
     <Compile Include="RetryPolicy.cs" />
     <Compile Include="Results\ScalarResults.cs" />
+    <Compile Include="SharedAccessToken.cs" />
     <Compile Include="SqlHelper.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Results\XmlSqlDataReader.cs" />
