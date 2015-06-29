@@ -3,7 +3,7 @@ using System.Data;
 using System.Xml;
 
 
-namespace Trollbridge.Common.Results
+namespace Trollbridge.Core.Results
 {
     public class DatasetResults
     {

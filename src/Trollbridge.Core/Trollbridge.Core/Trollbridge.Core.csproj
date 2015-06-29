@@ -7,8 +7,8 @@
     <ProjectGuid>{63BC2D83-3E99-40BC-BB9A-84E378873FC6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Trollbridge.Common</RootNamespace>
-    <AssemblyName>Trollbridge.Common</AssemblyName>
+    <RootNamespace>Trollbridge.Core</RootNamespace>
+    <AssemblyName>Trollbridge.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

@@ -6,7 +6,7 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Queue;
 using Microsoft.WindowsAzure.Storage.Queue.Protocol;
 
-namespace Trollbridge.Common.PolicyInfo
+namespace Trollbridge.Core.PolicyInfo
 {
     public class PolicyInfoQueue
     {

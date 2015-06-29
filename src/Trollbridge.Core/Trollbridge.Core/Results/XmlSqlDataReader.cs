@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace Trollbridge.Common.Results
+namespace Trollbridge.Core.Results
 {
     public class XmlSqlDataReader
     {

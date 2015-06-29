@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-namespace Trollbridge.Common
+namespace Trollbridge.Core
 {
     [Serializable]
     public sealed class RetryLimitExceededException : Exception

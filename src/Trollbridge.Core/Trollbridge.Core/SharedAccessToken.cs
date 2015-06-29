@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Trollbridge.Common
+namespace Trollbridge.Core
 {
     [DataContract]
     public class ShareAccessToken

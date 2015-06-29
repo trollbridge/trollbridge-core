@@ -15,7 +15,7 @@ using System.Data.SqlTypes;
 using System.Runtime;
 using System.Runtime.InteropServices;
 
-namespace Trollbridge.Common
+namespace Trollbridge.Core
 {
     public static class Utilities
     {

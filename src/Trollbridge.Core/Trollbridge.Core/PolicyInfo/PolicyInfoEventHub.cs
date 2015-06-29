@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Trollbridge.Common.PolicyInfo
+namespace Trollbridge.Core.PolicyInfo
 {
     public class PolicyInfoEventHub
     {

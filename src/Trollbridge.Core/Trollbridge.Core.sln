@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trollbridge.Common", "Trollbridge.Common\Trollbridge.Common.csproj", "{63BC2D83-3E99-40BC-BB9A-84E378873FC6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trollbridge.Core", "Trollbridge.Core\Trollbridge.Core.csproj", "{63BC2D83-3E99-40BC-BB9A-84E378873FC6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

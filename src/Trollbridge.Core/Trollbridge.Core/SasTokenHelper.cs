@@ -8,9 +8,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Web;
-using Trollbridge.Common.PolicyInfo;
+using Trollbridge.Core.PolicyInfo;
 
-namespace Trollbridge.Common
+namespace Trollbridge.Core
 {
     public static class SasTokenHelper
     {

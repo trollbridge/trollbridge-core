@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Trollbridge.Common.Results
+namespace Trollbridge.Core.Results
 {
     public class NonQueryResults
     {

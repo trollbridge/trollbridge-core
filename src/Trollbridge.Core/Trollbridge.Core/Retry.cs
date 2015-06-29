@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Data.SqlClient;
 
-namespace Trollbridge.Common
+namespace Trollbridge.Core
 {
     public static class Retry
     {

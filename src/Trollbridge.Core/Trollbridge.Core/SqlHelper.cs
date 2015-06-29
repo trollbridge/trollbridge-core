@@ -6,9 +6,9 @@ using System.Xml;
 using System.Globalization;
 using System.Threading;
 using System.Data.SqlTypes;
-using Trollbridge.Common.Results;
+using Trollbridge.Core.Results;
 
-namespace Trollbridge.Common
+namespace Trollbridge.Core
 {
     public sealed class SqlHelper
     {
