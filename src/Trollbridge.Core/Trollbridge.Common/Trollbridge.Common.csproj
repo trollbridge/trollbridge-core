@@ -86,6 +86,7 @@
     <Compile Include="Results\ScalarResults.cs" />
     <Compile Include="SharedAccessToken.cs" />
     <Compile Include="SqlHelper.cs" />
+    <Compile Include="TokenHolder.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Results\XmlSqlDataReader.cs" />
   </ItemGroup>
