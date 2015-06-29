@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PolicyInfo\PolicyInfoBlob.cs" />
+    <Compile Include="PolicyInfo\PolicyInfoEventHub.cs" />
     <Compile Include="PolicyInfo\PolicyInfoQueue.cs" />
     <Compile Include="Results\DatasetResults.cs" />
     <Compile Include="Results\NonQueryResults.cs" />
