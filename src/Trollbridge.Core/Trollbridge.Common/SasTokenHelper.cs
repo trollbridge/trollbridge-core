@@ -11,7 +11,7 @@ using Trollbridge.Common.PolicyInfo;
 
 namespace Trollbridge.Common
 {
-    public static class SASTokenHelper
+    public static class SasTokenHelper
     {
         public static List<PolicyInfoBlob> BlobPolicies = new List<PolicyInfoBlob>();
         public static List<PolicyInfoQueue> QueuePolicies = new List<PolicyInfoQueue>();
