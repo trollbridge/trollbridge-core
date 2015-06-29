@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Web;
 using Trollbridge.Common.PolicyInfo;
 
@@ -13,6 +14,8 @@ namespace Trollbridge.Common
 {
     public static class SasTokenHelper
     {
+        private static bool _firstTime = true;
+
         public static List<PolicyInfoBlob> BlobPolicies = new List<PolicyInfoBlob>();
         public static List<PolicyInfoQueue> QueuePolicies = new List<PolicyInfoQueue>();
         public static List<PolicyInfoEventHub> EventHubPolicies = new List<PolicyInfoEventHub>();
@@ -131,6 +134,161 @@ namespace Trollbridge.Common
             {
                 EventLog.WriteEntry(Process.GetCurrentProcess().ProcessName, ex.ToString(), EventLogEntryType.Error);
             }
+        }
+
+        public static TokenHolder GetTokensUncompressed(string deviceIdentification)
+        {
+            StringBuilder results = new StringBuilder();
+
+            string compressed = Utilities.CompressString(deviceIdentification);
+            TokenHolder tokenHolder = GetTokensCompressed(compressed);
+
+            foreach (var queue in tokenHolder.AzureQueues)
+            {
+                queue.SasToken = Utilities.DecompressString(queue.SasToken);
+            }
+
+            foreach (var storage in tokenHolder.AzureStorage)
+            {
+                storage.SasToken = Utilities.DecompressString(storage.SasToken);
+            }
+
+            foreach (var eventHub in tokenHolder.AzureEventHubs)
+            {
+                eventHub.SasToken = Utilities.DecompressString(eventHub.SasToken);
+            }
+
+            return tokenHolder;
+        }
+
+        public static TokenHolder GetTokensCompressed(string deviceIdentification)
+        {
+            if (_firstTime)
+            {
+                RefreshCache();
+                _firstTime = false;
+            }
+
+            string[] args = Utilities.DecompressString(deviceIdentification).Split('_');
+            int customerId = Convert.ToInt32(args[0]);
+            int siteId = Convert.ToInt32(args[1]);
+            string macAddress = args[2];
+
+            TokenHolder holder = new TokenHolder();
+            holder.AzureStorage = new List<ShareAccessToken>();
+            holder.AzureQueues = new List<ShareAccessToken>();
+            holder.AzureEventHubs = new List<ShareAccessToken>();
+            DateTime start = holder.EarliestTokenExpires = DateTime.Now;
+
+            List<int> blobPolicies = new List<int>();
+            List<int> queuePolicies = new List<int>();
+            List<int> eventHubPolicies = new List<int>();
+
+            string connStr = Utilities.GetAppSettingsStringValue("DatabaseConnectionString");
+
+            try
+            {
+                Retry.ExecuteRetryAction(() =>
+                {
+                    using (SqlConnection con = new SqlConnection(connStr))
+                    {
+                        con.Open();
+                        SqlCommand cmd = new SqlCommand("dbo.GetStoragePolicyMapForServer", con);
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.Add(Utilities.GetSqlParameter("@CustomerId", customerId, SqlDbType.Int));
+                        cmd.Parameters.Add(Utilities.GetSqlParameter("@SiteId", siteId, SqlDbType.Int));
+                        cmd.Parameters.Add(Utilities.GetSqlParameter("@MacAddress", macAddress, SqlDbType.NVarChar));
+
+                        SqlDataReader sdr = cmd.ExecuteReader();
+
+                        // First Recordset is for Azure Blob Policies
+                        while (sdr.Read())
+                        {
+                            int id = sdr.GetInt32(sdr.GetOrdinal("PolicyId"));
+                            blobPolicies.Add(id);
+                        }
+                        sdr.NextResult();
+
+                        // Second Recordset is for Azure Queues
+                        while (sdr.Read())
+                        {
+                            int id = sdr.GetInt32(sdr.GetOrdinal("PolicyId"));
+                            queuePolicies.Add(id);
+                        }
+                        sdr.NextResult();
+
+                        // Third Recordset is for Azure Event Hubs
+                        while (sdr.Read())
+                        {
+                            int id = sdr.GetInt32(sdr.GetOrdinal("PolicyId"));
+                            eventHubPolicies.Add(id);
+                        }
+                        sdr.Close();
+                        con.Close();
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                EventLog.WriteEntry(Process.GetCurrentProcess().ProcessName, ex.ToString(), EventLogEntryType.Error);
+            }
+
+            foreach (int id in blobPolicies)
+            {
+                foreach (PolicyInfoBlob info in BlobPolicies)
+                {
+                    if (id == info.PolicyId && customerId == info.CustomerId && siteId == info.SiteId)
+                    {
+                        ShareAccessToken token = new ShareAccessToken();
+                        token.SasToken = info.SASToken;
+                        token.DateExpires = info.DateExpires;
+                        token.Uri = info.ContainerUri;
+                        token.Name = info.ContainerName;
+                        if (holder.EarliestTokenExpires > info.DateExpires || holder.EarliestTokenExpires == start) holder.EarliestTokenExpires = info.DateExpires;
+                        holder.AzureStorage.Add(token);
+                        break;
+                    }
+                }
+            }
+
+            foreach (int id in queuePolicies)
+            {
+                foreach (PolicyInfoQueue info in QueuePolicies)
+                {
+                    if (id == info.PolicyId && customerId == info.CustomerId && siteId == info.SiteId)
+                    {
+                        ShareAccessToken token = new ShareAccessToken();
+                        token.SasToken = info.SASToken;
+                        token.DateExpires = info.DateExpires;
+                        token.Uri = info.QueueUri;
+                        token.Name = info.QueueName;
+                        if (holder.EarliestTokenExpires > info.DateExpires || holder.EarliestTokenExpires == start) holder.EarliestTokenExpires = info.DateExpires;
+                        holder.AzureQueues.Add(token);
+                        break;
+                    }
+                }
+            }
+
+            foreach (int id in eventHubPolicies)
+            {
+                foreach (PolicyInfoEventHub info in EventHubPolicies)
+                {
+                    if (id == info.PolicyId && customerId == info.CustomerId && siteId == info.SiteId)
+                    {
+                        ShareAccessToken token = new ShareAccessToken();
+                        token.SasToken = info.SASToken;
+                        token.DateExpires = info.DateExpires;
+                        token.Uri = info.EventHubUri;
+                        token.Name = info.EventHubName;
+                        if (holder.EarliestTokenExpires > info.DateExpires || holder.EarliestTokenExpires == start) holder.EarliestTokenExpires = info.DateExpires;
+                        holder.AzureEventHubs.Add(token);
+                        break;
+                    }
+                }
+            }
+
+            return holder;
         }
     }
 }
