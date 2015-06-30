@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Trollbridge.Core</id>
+    <title>Trollbridge Core</title>
+    <version>$version$</version>
+    <authors>Trollbridge</authors>
+    <owners>Trollbridge</owners>
+    <licenseUrl>https://raw.githubusercontent.com/trollbridge/trollbridge-core/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/trollbridge/trollbridge-core</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/trollbridge/trollbridge-core/master/content/troll.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Core functionality for Trollbridge</summary>
+    <description>Core functionality for Trollbridge</description>
+    <copyright>Copyright © 2015 Trollbridge</copyright>
+    <tags>Microsoft Azure "Microsoft Azure" IoT "Event Hubs" "Service Bus" "Azure Storage"</tags>
+  </metadata>
+</package>
